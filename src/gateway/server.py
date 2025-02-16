@@ -1,7 +1,7 @@
 import os, gridfs, pika, json
 from flask import Flask, request, send_file
 from flask_pymongo import PyMongo
-from auth import validate
+from auth.validate import token
 from auth_svc import access
 from storage import util
 from bson.objectid import ObjectId
@@ -27,4 +27,30 @@ def login():
 
 @server.route('/upload', methods=['POST'])
 def upload():
-    access, err = validate.token(request)
+    access, err = token(request)
+
+    if err:
+        return err
+    
+    access = json.loads(access)
+
+    if access["admin"]:
+        if len(request.files) != 1:
+            return "exactly 1 file required", 400
+
+        for _, file in request.files.items():
+            err = util.upload(file, fs_videos, channel, access)
+
+            if err:
+                return err
+
+        return "success!", 200
+    else:
+        return "not authorized", 401
+
+@server.route('/download', methods=['GET'])
+def download():
+    pass
+
+if __name__ == '__main__':
+    server.run(host='0.0.0.0', port=8080)
