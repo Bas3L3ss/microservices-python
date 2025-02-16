@@ -130,5 +130,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-src/auth/manifests/secret.yaml
+src/**/manifests/secret.yaml
 
