@@ -23,6 +23,6 @@ spec:
           image: baseless060907/gateway
           envFrom:
             - configMapRef:
-              name: gateway-configmap
+                name: gateway-configmap
             - secretRef:
-              name: gateway-secret
+                name: gateway-secret
