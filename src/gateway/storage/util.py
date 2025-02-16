@@ -3,9 +3,9 @@ import pika,json
 def upload(file, fs, channel, access):
     try:
         file_id = fs.put(file)
-    except Exception as e:
-        print(e)
-        return 'Internal server error', 500
+    except Exception as err:
+        print(err)
+        return f'file uploading failed{str(err)}', 500
     
     message ={  
         "video_fid": str(file_id),
@@ -21,5 +21,5 @@ def upload(file, fs, channel, access):
     except Exception as err:
         print(err)
         fs.delete(file_id)
-        return "internal server error", 500
+        return f'message publishing failed: {str(err)}', 500
 
