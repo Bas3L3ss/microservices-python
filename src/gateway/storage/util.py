@@ -4,6 +4,7 @@ def upload(file, fs, channel, access):
     try:
         file_id = fs.put(file)
     except Exception as e:
+        print(e)
         return 'Internal server error', 500
     
     message ={  
